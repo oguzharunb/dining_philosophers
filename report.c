@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philo.h                                            :+:      :+:    :+:   */
+/*   report.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 15:31:24 by obastug          ###   ########.fr       */
+/*   Created: 2025/01/17 15:22:31 by obastug           #+#    #+#             */
+/*   Updated: 2025/01/17 15:40:39 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO_H
-# define PHILO_H
-# define THINKING 0
-#include <pthread.h>
+#include "philo.h"
+#include <stdio.h>
 
-typedef struct s_table
+void	report_status(t_philo *philo, int status_code)
 {
-	pthread_mutex_t	report_lock;
-}	t_table;
-
-typedef struct s_philo
-{
-	pthread_t		thread;
-	t_table			table;
-}	t_philo;
-
-void	report_status(t_philo *philo, int status_code);
-
-#endif
+	pthread_mutex_lock(&philo->table.report_lock);
+	if (status_code == THINKING)
+	{
+		printf("philo %p is thinking\n", philo);
+	}
+	pthread_mutex_unlock(&philo->table.report_lock);
+}

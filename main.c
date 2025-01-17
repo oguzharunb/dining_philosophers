@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 15:15:50 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 15:31:49 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	*philosopher_think(void *args)
 	t_philo	*philo;
 
 	philo = args;
-	printf("philosopher %p is thinking\n", philo);
+	report_status(philo, THINKING);
 	sleep(1);
 	return (args);
 }
@@ -35,6 +35,11 @@ void	*philosopher_loop(void *args)
 	{
 		philosopher_think(philo);
 	}
+}
+
+void	init_table(t_table *table)
+{
+	pthread_mutex_init(&(table->report_lock), NULL);
 }
 
 int	main(void)
