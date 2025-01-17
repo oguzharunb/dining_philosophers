@@ -1,25 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   report.c                                           :+:      :+:    :+:   */
+/*   philo_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 15:22:31 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:01:36 by obastug          ###   ########.fr       */
+/*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
+/*   Updated: 2025/01/17 18:13:47 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-#include <stdio.h>
+#include <unistd.h>
 
-void	report_status(t_philo *philo, int status_code)
+void	philosopher_think(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->report_lock);
-	gettimeofday(&(philo->table->tv), NULL);
-	if (status_code == THINKING)
+	report_status(philo, THINKING);
+	usleep(1000000);
+}
+
+void	*philosopher_loop(void *args)
+{
+	t_philo	*philo;
+
+	philo = args;
+	while (1)
 	{
-		printf("(%ld) philo %p is thinking\n", philo->table->tv.tv_sec, philo);
+		philosopher_think(philo);
 	}
-	pthread_mutex_unlock(&philo->table->report_lock);
 }

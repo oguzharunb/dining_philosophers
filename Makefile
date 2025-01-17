@@ -1,5 +1,5 @@
 NAME = philo
-SRCS = main.c report.c
+SRCS = main.c report.c libft.c error.c philo_operations.c
 OBJS = $(SRCS:.c=.o)
 CC = cc
 LIBS = -lpthread

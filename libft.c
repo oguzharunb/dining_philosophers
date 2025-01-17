@@ -1,25 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   report.c                                           :+:      :+:    :+:   */
+/*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/17 15:22:31 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:01:36 by obastug          ###   ########.fr       */
+/*   Created: 2025/01/17 17:25:30 by obastug           #+#    #+#             */
+/*   Updated: 2025/01/17 18:10:26 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo.h"
-#include <stdio.h>
-
-void	report_status(t_philo *philo, int status_code)
+int	ft_atoi(char const *s)
 {
-	pthread_mutex_lock(&philo->table->report_lock);
-	gettimeofday(&(philo->table->tv), NULL);
-	if (status_code == THINKING)
+	long	ret;
+
+	ret = 0;
+	while (*s)
 	{
-		printf("(%ld) philo %p is thinking\n", philo->table->tv.tv_sec, philo);
+		if (*s >= '0' && *s <= '9')
+			ret = ret * 10 + ((*s) - '0');
+		else
+			return (0);
+		s++;
 	}
-	pthread_mutex_unlock(&philo->table->report_lock);
+	return (ret);
+}
+
+int	ft_strlen(char const *s)
+{
+	int	i;
+
+	i = 0;
+	while (s[i])
+		i++;
+	return (i);
 }
