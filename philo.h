@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 19:15:48 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:20:23 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 # define THINKING 0
 # define SLEEPING 1
+# define EATING 2
 
 typedef struct s_table
 {

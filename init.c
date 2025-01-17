@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:26:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 19:17:03 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:31:39 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ int	put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table)
 	while (i < table->number_of_ph)
 	{
 		(philos + i)->left_fork = forks + min(i, (i + 1) % table->number_of_ph);
-		(philos + i)->right_fork = forks + max(i, (i + 1) % table->number_of_ph);
+		(philos + i)->right_fork = forks
+			+ max(i, (i + 1) % table->number_of_ph);
 		i++;
 	}
 }

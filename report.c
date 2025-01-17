@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:22:31 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:17:48 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:21:23 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,7 @@ void	report_status(t_philo *philo, int status_code)
 		printf("(%ld) philo %p is thinking\n", philo->table->tv.tv_sec, philo);
 	if (status_code == SLEEPING)
 		printf("(%ld) philo %p is sleeping\n", philo->table->tv.tv_sec, philo);
+	if (status_code == EATING)
+		printf("(%ld) philo %p is eating\n", philo->table->tv.tv_sec, philo);
 	pthread_mutex_unlock(&philo->table->report_lock);
 }
