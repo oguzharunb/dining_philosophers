@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 16:03:05 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 17:21:35 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,34 @@ void	*philosopher_loop(void *args)
 	}
 }
 
-void	init_table(t_table *table)
+void	init_table(t_table *table, int number_of_ph)
 {
 	pthread_mutex_init(&(table->report_lock), NULL);
+	table->number_of_ph = number_of_ph;
+}
+
+void	init_philosophers(t_philo *philos, t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->number_of_ph)
+	{
+		(philos + i)->table = table;
+		i++;
+	}
+}
+
+void	start_philosophers(t_philo *philos, t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->number_of_ph)
+		pthread_create(&(philos + i)->thread, NULL, philosopher_loop, philos + (i++));
+	i = 0;
+	while (i < table->number_of_ph)
+		pthread_join((philos + (i++))->thread, NULL);
 }
 
 int	main(void)
@@ -48,27 +73,14 @@ int	main(void)
 	t_philo			*philos;
 	t_table			*table;
 
-	number_of_ph = 5;
+	number_of_ph = 4;
 	table = malloc(sizeof(t_table));
 	if (!table)
 		return (1);
 	philos = malloc(sizeof(t_philo) * number_of_ph);
 	if (!philos)
 		return (1);
-	init_table(table);
-	(philos + 0)->table = table;
-	(philos + 1)->table = table;
-	(philos + 2)->table = table;
-	(philos + 3)->table = table;
-	(philos + 4)->table = table;
-	pthread_create(&(philos + 0)->thread, NULL, philosopher_loop, philos + 0);
-	pthread_create(&(philos + 1)->thread, NULL, philosopher_loop, philos + 1);
-	pthread_create(&(philos + 2)->thread, NULL, philosopher_loop, philos + 2);
-	pthread_create(&(philos + 3)->thread, NULL, philosopher_loop, philos + 3);
-	pthread_create(&(philos + 4)->thread, NULL, philosopher_loop, philos + 4);
-	pthread_join((philos + 0)->thread, NULL);
-	pthread_join((philos + 1)->thread, NULL);
-	pthread_join((philos + 2)->thread, NULL);
-	pthread_join((philos + 3)->thread, NULL);
-	pthread_join((philos + 4)->thread, NULL);
+	init_table(table, number_of_ph);
+	init_philosophers(philos, table);
+	start_philosophers(philos, table);
 }
