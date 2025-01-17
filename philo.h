@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:39:34 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 19:15:48 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	pthread_t		thread;
+	t_fork			*left_fork;
+	t_fork			*right_fork;
 	t_table			*table;
 }	t_philo;
 
@@ -44,11 +46,15 @@ void	free_table(t_table *table);
 
 int		init_philosophers(t_philo **philos, t_table *table);
 int		init_table(t_table **table, int argc, char const **argv);
+int		init_forks(t_fork **forks, t_table *table);
+int		put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table);
 
 void	report_status(t_philo *philo, int status_code);
 
 int		ft_atoi(char const *s);
 int		ft_strlen(char const *s);
+int		max(int a, int b);
+int		min(int a, int b);
 
 void	*philosopher_loop(void *args);
 
