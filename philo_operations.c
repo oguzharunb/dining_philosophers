@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:13:47 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 18:18:22 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,13 @@
 void	philosopher_think(t_philo *philo)
 {
 	report_status(philo, THINKING);
-	usleep(1000000);
+	usleep(500000);
+}
+
+void	philosopher_sleep(t_philo *philo)
+{
+	report_status(philo, SLEEPING);
+	usleep(500000);
 }
 
 void	*philosopher_loop(void *args)
@@ -27,5 +33,6 @@ void	*philosopher_loop(void *args)
 	while (1)
 	{
 		philosopher_think(philo);
+		philosopher_sleep(philo);
 	}
 }

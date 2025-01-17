@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 18:10:45 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 18:18:15 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/time.h>
 
 # define THINKING 0
+# define SLEEPING 1
 
 typedef struct s_table
 {
@@ -38,7 +39,6 @@ int		ft_atoi(char const *s);
 int		ft_strlen(char const *s);
 
 void	*philosopher_loop(void *args);
-void	*philosopher_think(void *args);
 
 int		throw_error(char const *s, int errno);
 #endif
