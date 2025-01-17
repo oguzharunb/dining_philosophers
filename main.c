@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 15:31:49 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/17 16:03:05 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	*philosopher_think(void *args)
 
 	philo = args;
 	report_status(philo, THINKING);
-	sleep(1);
+	usleep(1000000);
 	return (args);
 }
 
@@ -46,11 +46,21 @@ int	main(void)
 {
 	unsigned long	number_of_ph;
 	t_philo			*philos;
+	t_table			*table;
 
 	number_of_ph = 5;
+	table = malloc(sizeof(t_table));
+	if (!table)
+		return (1);
 	philos = malloc(sizeof(t_philo) * number_of_ph);
 	if (!philos)
-		return (0);
+		return (1);
+	init_table(table);
+	(philos + 0)->table = table;
+	(philos + 1)->table = table;
+	(philos + 2)->table = table;
+	(philos + 3)->table = table;
+	(philos + 4)->table = table;
 	pthread_create(&(philos + 0)->thread, NULL, philosopher_loop, philos + 0);
 	pthread_create(&(philos + 1)->thread, NULL, philosopher_loop, philos + 1);
 	pthread_create(&(philos + 2)->thread, NULL, philosopher_loop, philos + 2);
