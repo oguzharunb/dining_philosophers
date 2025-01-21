@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 19:20:23 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/21 09:02:44 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,18 @@
 # define SLEEPING 1
 # define EATING 2
 
+// must_eat is optional
 typedef struct s_table
 {
 	pthread_mutex_t		report_lock;
 	struct timeval		tv;
 	struct timezone		*tz;
+	time_t				beginning_sec;
+	suseconds_t			beginning_usec;
+	unsigned long		time_to_die;
+	unsigned long		time_to_eat;
+	unsigned long		time_to_sleep;
+	unsigned long		must_eat;
 	int					number_of_ph;
 }	t_table;
 
@@ -58,6 +65,10 @@ int		max(int a, int b);
 int		min(int a, int b);
 
 void	*philosopher_loop(void *args);
+
+void	init_time(t_table *table);
+long	get_current_ms(t_table *table);
+long	get_begin_ms(t_table *table);
 
 int		throw_error(char const *s, int errno);
 #endif
