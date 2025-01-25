@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/21 09:02:44 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:09:21 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,15 @@
 # define THINKING 0
 # define SLEEPING 1
 # define EATING 2
+# define DEATH 3
+
+typedef struct s_philo t_philo;
 
 // must_eat is optional
 typedef struct s_table
 {
 	pthread_mutex_t		report_lock;
+	t_philo				*philos;
 	struct timeval		tv;
 	struct timezone		*tz;
 	time_t				beginning_sec;
@@ -33,6 +37,7 @@ typedef struct s_table
 	unsigned long		time_to_sleep;
 	unsigned long		must_eat;
 	int					number_of_ph;
+	int					philos_alive;
 }	t_table;
 
 typedef struct s_fork
@@ -43,8 +48,10 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	pthread_t		thread;
+	pthread_t		interrogator;
 	t_fork			*left_fork;
 	t_fork			*right_fork;
+	long			last_meal_ms;
 	t_table			*table;
 }	t_philo;
 
@@ -56,6 +63,7 @@ int		init_philosophers(t_philo **philos, t_table *table);
 int		init_table(t_table **table, int argc, char const **argv);
 int		init_forks(t_fork **forks, t_table *table);
 int		put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table);
+void	*did_philo_died(void *args);
 
 void	report_status(t_philo *philo, int status_code);
 

@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/17 19:16:04 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:10:36 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,9 @@ void	start_philosophers(t_philo *philos, t_table *table)
 	while (i < table->number_of_ph)
 	{
 		pthread_create(&(philos + i)->thread, NULL,
-			philosopher_loop, philos + (i));
+			philosopher_loop, philos + i);
+		//pthread_create(&(philos + i)->interrogator, NULL,
+		//	did_philo_died, philos + i);
 		i++;
 	}
 	i = 0;

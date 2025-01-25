@@ -6,13 +6,14 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/21 16:55:19 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/25 16:00:01 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
+// philosophers think for 10ms every time
 void	philosopher_think(t_philo *philo)
 {
 	report_status(philo, THINKING);
@@ -40,6 +41,7 @@ void	philosopher_eat(t_philo *philo)
 	start_ms = get_current_ms(philo->table);
 	while (get_current_ms(philo->table) - start_ms < philo->table->time_to_eat)
 		usleep(100);
+	philo->last_meal_ms = get_current_ms(philo->table);
 	pthread_mutex_unlock(&philo->right_fork->mutex);
 	pthread_mutex_unlock(&philo->left_fork->mutex);
 }
