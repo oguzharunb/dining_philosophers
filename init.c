@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:26:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/21 08:54:01 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/29 13:28:32 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	init_table(t_table **table, int argc, char const **argv)
 	if (argc == 6)
 		(*table)->must_eat = ft_atoi(argv[5]);
 	init_time(*table);
+	(*table)->philos_alive = 1;
 	return (0);
 }
 
@@ -97,6 +98,8 @@ int	init_philosophers(t_philo **philos, t_table *table)
 	while (i < table->number_of_ph)
 	{
 		((*philos) + i)->table = table;
+		((*philos) + i)->last_meal_ms = 0;
 		i++;
 	}
+	table->philos = *philos;
 }

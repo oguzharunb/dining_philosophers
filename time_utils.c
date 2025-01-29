@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 08:34:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/21 09:02:49 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/29 13:26:04 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ long	get_current_ms(t_table *table)
 {
 	gettimeofday(&table->tv, NULL);
 	return (((table->tv.tv_sec - table->beginning_sec) * 1000)
-				+ ((table->tv.tv_usec - table->beginning_usec) / 1000));
+		+ ((table->tv.tv_usec - table->beginning_usec) / 1000));
 }
 
 void	init_time(t_table *table)
