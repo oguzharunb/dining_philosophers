@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/25 16:09:21 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/29 13:24:28 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define EATING 2
 # define DEATH 3
 
-typedef struct s_philo t_philo;
+typedef struct s_philo	t_philo;
 
 // must_eat is optional
 typedef struct s_table
