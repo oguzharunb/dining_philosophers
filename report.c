@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:22:31 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/25 15:57:21 by obastug          ###   ########.fr       */
+/*   Updated: 2025/03/19 21:36:41 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,16 @@ void	report_status(t_philo *philo, int status_code)
 		return ;
 	ms = get_current_ms(philo->table);
 	if (status_code == THINKING)
-		printf("(%ld) philo %p is thinking\n", ms, philo);
+		printf("%ld %d is thinking\n", ms, philo->order);
 	else if (status_code == SLEEPING)
-		printf("(%ld) philo %p is sleeping\n", ms, philo);
+		printf("%ld %d is sleeping\n", ms, philo->order);
 	else if (status_code == EATING)
-		printf("(%ld) philo %p is eating\n", ms, philo);
+		printf("%ld %d is eating\n", ms, philo->order);
+	else if (status_code == LEFT_FORK_TAKEN || status_code == RIGHT_FORK_TAKEN)
+		printf("%ld %d has taken a fork\n", ms, philo->order);
 	else if (status_code == DEATH)
 	{
-		printf("(%ld) philo %p just died\n", ms, philo);
+		printf("%ld %d died\n", ms, philo->order);
 		philo->table->philos_alive = 0;
 	}
 	pthread_mutex_unlock(&philo->table->report_lock);

@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/29 13:25:35 by obastug          ###   ########.fr       */
+/*   Updated: 2025/03/19 21:35:14 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	kill_all_philos(t_table *table)
 	i = 0;
 	while (i < table->number_of_ph)
 	{
+		//pthread_mutex_destroy(&(table->philos + i)->left_fork->mutex);
 		i++;
 	}
 }

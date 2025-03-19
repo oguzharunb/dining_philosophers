@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/29 13:24:28 by obastug          ###   ########.fr       */
+/*   Updated: 2025/01/29 17:54:49 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@
 # define SLEEPING 1
 # define EATING 2
 # define DEATH 3
+# define LEFT_FORK_TAKEN 4
+# define RIGHT_FORK_TAKEN 5
 
 typedef struct s_philo	t_philo;
 
@@ -53,6 +55,7 @@ typedef struct s_philo
 	t_fork			*right_fork;
 	long			last_meal_ms;
 	t_table			*table;
+	int				order;
 }	t_philo;
 
 void	free_all_forks(t_fork *forks, int fork_number);

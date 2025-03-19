@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:26:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/29 13:28:32 by obastug          ###   ########.fr       */
+/*   Updated: 2025/03/19 21:36:35 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ int	init_philosophers(t_philo **philos, t_table *table)
 	{
 		((*philos) + i)->table = table;
 		((*philos) + i)->last_meal_ms = 0;
+		((*philos) + i)->order = i + 1;
 		i++;
 	}
 	table->philos = *philos;
