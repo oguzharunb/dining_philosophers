@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/29 13:24:45 by obastug          ###   ########.fr       */
+/*   Updated: 2025/03/19 22:04:45 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	philosopher_eat(t_philo *philo)
 	report_status(philo, EATING);
 	start_ms = get_current_ms(philo->table);
 	while (get_current_ms(philo->table) - start_ms < philo->table->time_to_eat)
-		usleep(100);
+		usleep(1000);
 	philo->last_meal_ms = get_current_ms(philo->table);
 	pthread_mutex_unlock(&philo->right_fork->mutex);
 	pthread_mutex_unlock(&philo->left_fork->mutex);
