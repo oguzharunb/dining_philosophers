@@ -16,24 +16,31 @@
 #include <stdlib.h>
 #include "philo.h"
 
+void	start_interrogator(t_philo *philos, int i)
+{
+	pthread_create(&(philos + i)->interrogator, NULL,
+	did_philo_died, philos + i);
+}
+
 void	start_philosophers(t_philo *philos, t_table *table)
 {
 	int	i;
+	int	j;
 
 	i = 0;
 	while (i < table->number_of_ph)
 	{
-		pthread_create(&(philos + i)->interrogator, NULL,
-			did_philo_died, philos + i);
+		start_interrogator(philos, i);
 		pthread_create(&(philos + i)->thread, NULL,
-			philosopher_loop, philos + i);
+		philosopher_loop, philos + i);
+		printf("philo %d started\n", (philos + i)->order);
 		i++;
 	}
-	i = 0;
-	while (i < table->number_of_ph)
+	j = 0;
+	while (j < i)
 	{
-		pthread_join((philos + (i))->thread, NULL);
-		i++;
+		pthread_join((philos + (j))->thread, NULL);
+		j++;
 	}
 }
 
@@ -51,6 +58,8 @@ int	main(int argc, char const **argv)
 		return (free_table(table), 1);
 	put_forks_on_table(forks, philos, table);
 	start_philosophers(philos, table);
+	free_interrogators(table);
+	free_table(table);
 	free(table);
 	free(philos);
 	free(forks);

@@ -29,6 +29,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_table
 {
 	pthread_mutex_t		report_lock;
+	pthread_mutex_t		kill_lock;
 	t_philo				*philos;
 	struct timeval		tv;
 	struct timezone		*tz;
@@ -61,6 +62,7 @@ typedef struct s_philo
 void	free_all_forks(t_fork *forks, int fork_number);
 void	free_all_philosophers(t_philo *philos, int philo_number);
 void	free_table(t_table *table);
+void	free_interrogators(t_table *table);
 
 int		init_philosophers(t_philo **philos, t_table *table);
 int		init_table(t_table **table, int argc, char const **argv);

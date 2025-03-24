@@ -14,16 +14,16 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void	kill_all_philos(t_table *table)
+void	kill_all_philos(t_philo *philo)
 {
 	int	i;
+	int	self;
 
-	i = 0;
-	while (i < table->number_of_ph)
+	
+	while (i < philo->table->number_of_ph)
 	{
-		pthread_mutex_destroy(&(table->philos + i)->left_fork->mutex);
-		pthread_detach((table->philos + i)->thread);
-		pthread_detach((table->philos + i)->interrogator);
+		pthread_mutex_destroy(&(philo->table->philos + i)->left_fork->mutex);
+		pthread_detach((philo->table->philos + i)->thread);
 		i++;
 	}
 }
@@ -31,7 +31,6 @@ void	kill_all_philos(t_table *table)
 void	*did_philo_died(void *args)
 {
 	t_philo		*philo;
-	static int	i = 0;
 
 	philo = args;
 	while (philo->table->philos_alive)
@@ -40,7 +39,7 @@ void	*did_philo_died(void *args)
 			> philo->table->time_to_die)
 		{
 			report_status(philo, DEATH);
-			kill_all_philos(philo->table);
+			kill_all_philos(philo);
 			return (args);
 		}
 		usleep(100);

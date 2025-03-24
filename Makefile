@@ -7,10 +7,10 @@ LIBS = -lpthread
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(OBJS)
+	$(CC) -Wall -Wextra -Werror -fsanitize=thread -o $(NAME) $(OBJS)
 
 %o: %c
-	$(CC) -c $< -o $@
+	$(CC) -c -Wall -Wextra -Werror -fsanitize=thread $< -o $@
 
 clean:
 	rm -f $(OBJS)

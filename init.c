@@ -45,6 +45,7 @@ int	init_table(t_table **table, int argc, char const **argv)
 	if (!*table)
 		return (throw_error("Memory error!\n", 1));
 	pthread_mutex_init(&((*table)->report_lock), NULL);
+	pthread_mutex_init(&((*table)->kill_lock), NULL);
 	(*table)->number_of_ph = ft_atoi(argv[1]);
 	(*table)->time_to_die = ft_atoi(argv[2]);
 	(*table)->time_to_eat = ft_atoi(argv[3]);

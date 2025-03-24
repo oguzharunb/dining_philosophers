@@ -35,11 +35,14 @@ void	philosopher_eat(t_philo *philo)
 {
 	long	start_ms;
 
-	if (!philo->table->philos_alive)
+	if (!philo->table->philos_alive)	
 		return ;
 	pthread_mutex_lock(&philo->left_fork->mutex);
 	if (!philo->table->philos_alive)
+	{
+		pthread_mutex_unlock(&philo->left_fork->mutex);	
 		return ;
+	}
 	pthread_mutex_lock(&philo->right_fork->mutex);
 	report_status(philo, EATING);
 	start_ms = get_current_ms(philo->table);

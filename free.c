@@ -19,21 +19,14 @@ void	free_table(t_table *table)
 	free(table);
 }
 
-void	free_all_philosophers(t_philo *philos, int philo_number)
-{
-	(void)philos;
-	(void)philo_number;
-	return ;
-}
-
-void	free_all_forks(t_fork *forks, int fork_number)
+void	free_interrogators(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	while (i < fork_number)
+	while (i < table->number_of_ph)
 	{
-		pthread_mutex_destroy(&(forks + i)->mutex);
+		pthread_detach((table->philos + i)->interrogator);
 		i++;
 	}
 }
