@@ -44,6 +44,14 @@ void	start_philosophers(t_philo *philos, t_table *table)
 	}
 }
 
+void	join_philos(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (table->)
+}
+
 int	main(int argc, char const **argv)
 {
 	t_philo			*philos;
@@ -60,7 +68,6 @@ int	main(int argc, char const **argv)
 	start_philosophers(philos, table);
 	free_interrogators(table);
 	free_table(table);
-	free(table);
 	free(philos);
 	free(forks);
 	return (0);

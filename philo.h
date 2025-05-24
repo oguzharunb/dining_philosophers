@@ -29,7 +29,7 @@ typedef struct s_philo	t_philo;
 typedef struct s_table
 {
 	pthread_mutex_t		report_lock;
-	pthread_mutex_t		kill_lock;
+	pthread_mutex_t		philos_alive_lock;
 	t_philo				*philos;
 	struct timeval		tv;
 	struct timezone		*tz;
@@ -50,13 +50,14 @@ typedef struct s_fork
 
 typedef struct s_philo
 {
-	pthread_t		thread;
-	pthread_t		interrogator;
-	t_fork			*left_fork;
-	t_fork			*right_fork;
-	long			last_meal_ms;
-	t_table			*table;
-	int				order;
+	pthread_t			thread;
+	pthread_t			interrogator;
+	pthread_mutex_t		meal_lock;
+	t_fork				*left_fork;
+	t_fork				*right_fork;
+	long				last_meal_ms;
+	t_table				*table;
+	int					order;
 }	t_philo;
 
 void	free_all_forks(t_fork *forks, int fork_number);

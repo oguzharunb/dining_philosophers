@@ -30,9 +30,6 @@ void	report_status(t_philo *philo, int status_code)
 	else if (status_code == LEFT_FORK_TAKEN || status_code == RIGHT_FORK_TAKEN)
 		printf("%ld %d has taken a fork\n", ms, philo->order);
 	else if (status_code == DEATH)
-	{
 		printf("%ld %d died\n", ms, philo->order);
-		philo->table->philos_alive = 0;
-	}
 	pthread_mutex_unlock(&philo->table->report_lock);
 }
