@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:34:55 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:53:53 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,6 +133,7 @@ void	philosopher_eat(t_philo *philo)
 	philo->last_meal_ms = get_current_ms(philo->table);
 	pthread_mutex_unlock(&philo->meal_lock);
 	unlock_forks(philo);
+	(philo->has_eaten)++;
 	return ;
 }
 
@@ -151,6 +152,11 @@ void	*philosopher_loop(void *args)
 		}
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_eat(philo);
+		if (philo->table->must_eat != 0 && philo->has_eaten >= philo->table->must_eat)
+		{
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
+			return (args);
+		}
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
 		{

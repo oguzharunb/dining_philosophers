@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:44:10 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:56:44 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,20 @@ int		did_philo_died(t_philo *philo)
 	return (0);
 }
 
+int	did_all_philos_have_eaten(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->number_of_ph)
+	{
+		if (table->must_eat != 0 && table->philos[i].has_eaten < table->must_eat)
+			return (0);
+		i++;
+	}
+	return (1);
+}
+
 void	*interrogator(void *args)
 {
 	t_table		*table;
@@ -47,6 +61,11 @@ void	*interrogator(void *args)
 		i = 0;
 		while (i < table->number_of_ph)
 		{
+			if (did_all_philos_have_eaten(table))
+			{
+				pthread_mutex_unlock(&table->philos_alive_lock);
+				return (NULL);
+			}
 			if (did_philo_died(table->philos + i))
 			{
 				report_status(table->philos + i, DEATH);

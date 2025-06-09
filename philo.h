@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:12:07 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:54:48 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_table
 	unsigned long		time_to_die;
 	unsigned long		time_to_eat;
 	unsigned long		time_to_sleep;
-	unsigned long		must_eat;
+	int					must_eat;
 	int					number_of_ph;
 	int					philos_alive;
 }	t_table;
@@ -55,6 +55,7 @@ typedef struct s_philo
 	pthread_mutex_t		meal_lock;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
+	int					has_eaten;
 	unsigned long		last_meal_ms;
 	t_table				*table;
 	int					order;
