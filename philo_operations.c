@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:15:38 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:18:08 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,7 @@ void	philosopher_eat(t_philo *philo)
 	}
 	if (!life_of_philos(philo->table))
 	{
-		pthread_mutex_unlock(&second_fork->mutex);
-		pthread_mutex_unlock(&first_fork->mutex);
+		unlock_forks(philo);
 		return ;
 	}
 	report_status(philo, RIGHT_FORK_TAKEN);
