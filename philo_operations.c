@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/03/19 22:04:45 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:15:38 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	philosopher_sleep(t_philo *philo)
 	}
 }
 
-int	lock_forks(t_fork *fork, t_table *table)
+int	lock_forks(t_fork *fork)
 {
 	pthread_mutex_lock(&fork->mutex);
 	return (1);
@@ -87,55 +87,34 @@ void	philosopher_eat(t_philo *philo)
 		first_fork = philo->right_fork;
 		second_fork = philo->left_fork;
 	}
-	pthread_mutex_lock(&philo->table->philos_alive_lock);
-	if (!philo->table->philos_alive)	
-	{
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
+	if (!life_of_philos(philo->table))
 		return ;
-	}
-	pthread_mutex_unlock(&philo->table->philos_alive_lock);
-	if (!lock_forks(first_fork, philo->table))
-	{
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
+	if (!lock_forks(first_fork))
 		return ;
-	}
-	pthread_mutex_lock(&philo->table->philos_alive_lock);
-	if (!philo->table->philos_alive)
-	{
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
-		pthread_mutex_unlock(&first_fork->mutex);
+	if (!life_of_philos(philo->table))
 		return ;
-	}
-	pthread_mutex_unlock(&philo->table->philos_alive_lock);
 	report_status(philo, LEFT_FORK_TAKEN);
-	if (!lock_forks(second_fork, philo->table))
+	if (!lock_forks(second_fork))
 	{
 		pthread_mutex_unlock(&first_fork->mutex);
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		return ;
 	}
-	pthread_mutex_lock(&philo->table->philos_alive_lock);
-	if (!philo->table->philos_alive)
+	if (!life_of_philos(philo->table))
 	{
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		pthread_mutex_unlock(&second_fork->mutex);
 		pthread_mutex_unlock(&first_fork->mutex);
 		return ;
 	}
-	pthread_mutex_unlock(&philo->table->philos_alive_lock);
 	report_status(philo, RIGHT_FORK_TAKEN);
 	report_status(philo, EATING);
 	start_ms = get_current_ms(philo->table);
 	while (get_current_ms(philo->table) - start_ms < philo->table->time_to_eat)
 	{
-		pthread_mutex_lock(&philo->table->philos_alive_lock);
-		if (!philo->table->philos_alive)
+		if (!life_of_philos(philo->table))
 		{
 			unlock_forks(philo);
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return ;
 		}
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		usleep(1000);
 	}
 	pthread_mutex_lock(&philo->meal_lock);

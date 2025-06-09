@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/29 17:54:49 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:12:07 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ int		init_forks(t_fork **forks, t_table *table);
 int		put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table);
 int		did_philo_died(t_philo *philo);
 void	*interrogator(void *args);
+int		life_of_philos(t_table *table);
 
 void	report_status(t_philo *philo, int status_code);
 
