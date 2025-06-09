@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:18:08 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:34:55 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	unlock_forks(t_philo *philo)
 	pthread_mutex_unlock(&philo->right_fork->mutex);
 }
 
+//handle the case when there is just one philosopher
 void	philosopher_eat(t_philo *philo)
 {
 	unsigned long	start_ms;
@@ -82,6 +83,18 @@ void	philosopher_eat(t_philo *philo)
 
 	first_fork = philo->left_fork;
 	second_fork = philo->right_fork;
+	if (philo->table->number_of_ph == 1)
+	{
+		if (!lock_forks(first_fork))
+			return ;
+		report_status(philo, LEFT_FORK_TAKEN);
+		while (1)
+		{
+			if (!life_of_philos(philo->table))
+				return ;
+			usleep(1000);
+		}
+	}
 	if (philo->order % 2 == 0)
 	{
 		first_fork = philo->right_fork;
