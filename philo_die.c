@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/03/19 22:08:06 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/10 01:44:10 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,16 @@
 
 int		did_philo_died(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->meal_lock);
+	if (philo->table->number_of_ph != 1)
+		pthread_mutex_lock(&philo->meal_lock);
 	if (get_current_ms(philo->table) - philo->last_meal_ms > philo->table->time_to_die)
 	{
-		pthread_mutex_unlock(&philo->meal_lock);
+		if (philo->table->number_of_ph != 1)
+			pthread_mutex_unlock(&philo->meal_lock);
 		return (1);
 	}
-	pthread_mutex_unlock(&philo->meal_lock);
+	if (philo->table->number_of_ph != 1)
+		pthread_mutex_unlock(&philo->meal_lock);
 	return (0);
 }
 
