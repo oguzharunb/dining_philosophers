@@ -44,15 +44,11 @@ void	*interrogator(void *args)
 		i = 0;
 		while (i < table->number_of_ph)
 		{
-			pthread_mutex_lock(&table->philos_alive_lock);
 			if (did_philo_died(table->philos + i))
 			{
 				report_status(table->philos + i, DEATH);
-				table->philos_alive = 0;
-				pthread_mutex_unlock(&table->philos_alive_lock);
 				return (NULL);
 			}
-			pthread_mutex_unlock(&table->philos_alive_lock);
 			i++;
 		}
 		usleep(1000);

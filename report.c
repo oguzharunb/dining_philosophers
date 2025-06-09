@@ -17,14 +17,15 @@ void	report_status(t_philo *philo, int status_code)
 {
 	long	ms;
 
+	pthread_mutex_lock(&philo->table->report_lock);
 	pthread_mutex_lock(&philo->table->philos_alive_lock);
 	if (!philo->table->philos_alive)
 	{
+		pthread_mutex_unlock(&philo->table->report_lock);
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		return ;
 	}
 	pthread_mutex_unlock(&philo->table->philos_alive_lock);
-	pthread_mutex_lock(&philo->table->report_lock);
 	ms = get_current_ms(philo->table);
 	if (status_code == THINKING)
 		printf("%ld %d is thinking\n", ms, philo->order);
@@ -35,6 +36,13 @@ void	report_status(t_philo *philo, int status_code)
 	else if (status_code == LEFT_FORK_TAKEN || status_code == RIGHT_FORK_TAKEN)
 		printf("%ld %d has taken a fork\n", ms, philo->order);
 	else if (status_code == DEATH)
+	{
+		pthread_mutex_lock(&philo->table->philos_alive_lock);
+		philo->table->philos_alive = 0;
+		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		printf("%ld %d died\n", ms, philo->order);
+		pthread_mutex_unlock(&philo->table->report_lock);
+		return ;
+	}
 	pthread_mutex_unlock(&philo->table->report_lock);
 }
