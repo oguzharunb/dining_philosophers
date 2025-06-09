@@ -21,9 +21,16 @@ void	philosopher_think(t_philo *philo)
 	time_to_think = (philo->table->time_to_die - philo->table->time_to_eat
 		- philo->table->time_to_sleep) / 2;
 	report_status(philo, THINKING);
-	while (get_current_ms(philo->table)
-		- philo->last_meal_ms < time_to_think)
+	while (1)
 	{
+		pthread_mutex_lock(&philo->meal_lock);
+		if (get_current_ms(philo->table) - philo->last_meal_ms
+			> time_to_think)
+		{
+			pthread_mutex_unlock(&philo->meal_lock);
+			break ;
+		}
+		pthread_mutex_unlock(&philo->meal_lock);
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
 		{
@@ -46,7 +53,10 @@ void	philosopher_sleep(t_philo *philo)
 	{
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return ;
+		}
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		usleep(1000);
 	}
@@ -74,7 +84,16 @@ void	unlock_forks(t_philo *philo)
 void	philosopher_eat(t_philo *philo)
 {
 	unsigned long	start_ms;
+	t_fork			*first_fork;
+	t_fork			*second_fork;
 
+	first_fork = philo->left_fork;
+	second_fork = philo->right_fork;
+	if (philo->order % 2 == 0)
+	{
+		first_fork = philo->right_fork;
+		second_fork = philo->left_fork;
+	}
 	pthread_mutex_lock(&philo->table->philos_alive_lock);
 	if (!philo->table->philos_alive)	
 	{
@@ -82,13 +101,15 @@ void	philosopher_eat(t_philo *philo)
 		return ;
 	}
 	pthread_mutex_unlock(&philo->table->philos_alive_lock);
-	if (!lock_forks(philo->left_fork, philo->table))
+	if (!lock_forks(first_fork, philo->table))
 		return ;
-	if (!lock_forks(philo->right_fork, philo->table))
+	report_status(philo, LEFT_FORK_TAKEN);
+	if (!lock_forks(second_fork, philo->table))
 	{
-		pthread_mutex_unlock(&philo->left_fork->mutex);
+		pthread_mutex_unlock(&first_fork->mutex);
 		return ;
 	}
+	report_status(philo, RIGHT_FORK_TAKEN);
 	report_status(philo, EATING);
 	start_ms = get_current_ms(philo->table);
 	while (get_current_ms(philo->table) - start_ms < philo->table->time_to_eat)
@@ -97,6 +118,7 @@ void	philosopher_eat(t_philo *philo)
 		if (!philo->table->philos_alive)
 		{
 			unlock_forks(philo);
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return ;
 		}
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
@@ -116,17 +138,30 @@ void	*philosopher_loop(void *args)
 	philo = args;
 	while (1)
 	{
+		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return (args);
+		}
+		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_eat(philo);
+		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return (args);
+		}
+		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_sleep(philo);
+		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
+		{
+			pthread_mutex_unlock(&philo->table->philos_alive_lock);
 			return (args);
+		}
+		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_think(philo);
-		if (!philo->table->philos_alive)
-			return (args);
 	}
 	return (args);
 }

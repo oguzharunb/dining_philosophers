@@ -81,9 +81,8 @@ int	put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table)
 	i = 0;
 	while (i < table->number_of_ph)
 	{
-		(philos + i)->left_fork = forks + min(i, (i + 1) % table->number_of_ph);
-		(philos + i)->right_fork = forks
-			+ max(i, (i + 1) % table->number_of_ph);
+		(philos + i)->left_fork = &forks[i];
+		(philos + i)->right_fork = &forks[(i + 1) % table->number_of_ph];
 		i++;
 	}
 	return (0);

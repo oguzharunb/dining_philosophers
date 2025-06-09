@@ -12,11 +12,17 @@
 
 #include "philo.h"
 #include <unistd.h>
+#include <stdio.h>
 
 int		did_philo_died(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->meal_lock);
 	if (get_current_ms(philo->table) - philo->last_meal_ms > philo->table->time_to_die)
+	{
+		pthread_mutex_unlock(&philo->meal_lock);
 		return (1);
+	}
+	pthread_mutex_unlock(&philo->meal_lock);
 	return (0);
 }
 
@@ -30,7 +36,10 @@ void	*interrogator(void *args)
 	{
 		pthread_mutex_lock(&table->philos_alive_lock);
 		if (table->philos_alive == 0)
+		{
+			pthread_mutex_unlock(&table->philos_alive_lock);
 			return (NULL);
+		}
 		pthread_mutex_unlock(&table->philos_alive_lock);
 		i = 0;
 		while (i < table->number_of_ph)
