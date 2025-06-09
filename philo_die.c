@@ -12,52 +12,41 @@
 
 #include "philo.h"
 #include <unistd.h>
-#include <stdio.h>
 
-void	kill_all_philos(t_philo *philo)
+int		did_philo_died(t_philo *philo)
 {
-	int	i;
-
-	i = 0;
-	while (i < philo->table->number_of_ph)
-	{
-		pthread_mutex_destroy(&(philo->table->philos + i)->left_fork->mutex);
-		i++;
-	}
-	i = 0;
-	while (i < philo->table->number_of_ph)
-	{
-		if (philo != philo->table->philos + i)
-			pthread_detach((philo->table->philos + i)->thread);
-		i++;
-	}
+	if (get_current_ms(philo->table) - philo->last_meal_ms > philo->table->time_to_die)
+		return (1);
+	return (0);
 }
 
-void	*did_philo_died(void *args)
+void	*interrogator(void *args)
 {
-	t_philo		*philo;
-	long	last_meal;
-	
-	philo = args;
+	t_table		*table;
+	int			i;
+
+	table = args;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->table->philos_alive_lock);
-		if (!philo->table->philos_alive)
+		pthread_mutex_lock(&table->philos_alive_lock);
+		if (table->philos_alive == 0)
+			return (NULL);
+		pthread_mutex_unlock(&table->philos_alive_lock);
+		i = 0;
+		while (i < table->number_of_ph)
 		{
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
-			return (args);
-		}
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
-		pthread_mutex_lock(&philo->meal_lock);
-		last_meal = philo->last_meal_ms;
-		pthread_mutex_unlock(&philo->meal_lock);
-		if ((get_current_ms(philo->table) - last_meal)
-			> philo->table->time_to_die)
-		{
-			report_status(philo, DEATH);
-			philo->table->philos_alive = 0;
-			return (args);
+			pthread_mutex_lock(&table->philos_alive_lock);
+			if (did_philo_died(table->philos + i))
+			{
+				report_status(table->philos + i, DEATH);
+				table->philos_alive = 0;
+				pthread_mutex_unlock(&table->philos_alive_lock);
+				return (NULL);
+			}
+			pthread_mutex_unlock(&table->philos_alive_lock);
+			i++;
 		}
 		usleep(1000);
 	}
+	return (NULL);
 }

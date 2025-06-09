@@ -30,6 +30,7 @@ typedef struct s_table
 {
 	pthread_mutex_t		report_lock;
 	pthread_mutex_t		philos_alive_lock;
+	pthread_t			interrogator;
 	t_philo				*philos;
 	struct timeval		tv;
 	struct timezone		*tz;
@@ -51,11 +52,10 @@ typedef struct s_fork
 typedef struct s_philo
 {
 	pthread_t			thread;
-	pthread_t			interrogator;
 	pthread_mutex_t		meal_lock;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
-	long				last_meal_ms;
+	unsigned long		last_meal_ms;
 	t_table				*table;
 	int					order;
 }	t_philo;
@@ -69,7 +69,8 @@ int		init_philosophers(t_philo **philos, t_table *table);
 int		init_table(t_table **table, int argc, char const **argv);
 int		init_forks(t_fork **forks, t_table *table);
 int		put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table);
-void	*did_philo_died(void *args);
+int		did_philo_died(t_philo *philo);
+void	*interrogator(void *args);
 
 void	report_status(t_philo *philo, int status_code);
 

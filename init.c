@@ -105,4 +105,5 @@ int	init_philosophers(t_philo **philos, t_table *table)
 		i++;
 	}
 	table->philos = *philos;
+	return (0);
 }

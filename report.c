@@ -18,8 +18,10 @@ void	report_status(t_philo *philo, int status_code)
 	long	ms;
 
 	pthread_mutex_lock(&philo->table->report_lock);
+	pthread_mutex_lock(&philo->table->philos_alive_lock);
 	if (!philo->table->philos_alive)
 		return ;
+	pthread_mutex_unlock(&philo->table->philos_alive_lock);
 	ms = get_current_ms(philo->table);
 	if (status_code == THINKING)
 		printf("%ld %d is thinking\n", ms, philo->order);

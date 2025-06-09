@@ -16,40 +16,36 @@
 #include <stdlib.h>
 #include "philo.h"
 
-void	start_interrogator(t_philo *philos, int i)
+void	start_interrogator(t_table *table)
 {
-	pthread_create(&(philos + i)->interrogator, NULL,
-	did_philo_died, philos + i);
+	pthread_create(&table->interrogator, NULL,
+	interrogator, table);
 }
 
 void	start_philosophers(t_philo *philos, t_table *table)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (i < table->number_of_ph)
 	{
-		start_interrogator(philos, i);
 		pthread_create(&(philos + i)->thread, NULL,
 		philosopher_loop, philos + i);
-		printf("philo %d started\n", (philos + i)->order);
 		i++;
-	}
-	j = 0;
-	while (j < i)
-	{
-		pthread_join((philos + (j))->thread, NULL);
-		j++;
 	}
 }
 
-void	join_philos(t_table *table)
+void	join_threads(t_table *table)
 {
 	int	i;
 
 	i = 0;
-	while (table->)
+	while (i < table->number_of_ph)
+	{
+		pthread_join((table->philos + i)->thread, NULL);
+		i++;
+	}
+	pthread_join(table->interrogator, NULL);
 }
 
 int	main(int argc, char const **argv)
@@ -65,8 +61,9 @@ int	main(int argc, char const **argv)
 	if (init_forks(&forks, table) == 1)
 		return (free_table(table), 1);
 	put_forks_on_table(forks, philos, table);
+	start_interrogator(table);
 	start_philosophers(philos, table);
-	free_interrogators(table);
+	join_threads(table);
 	free_table(table);
 	free(philos);
 	free(forks);

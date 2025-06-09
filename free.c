@@ -18,15 +18,3 @@ void	free_table(t_table *table)
 	pthread_mutex_destroy(&(table->report_lock));
 	free(table);
 }
-
-void	free_interrogators(t_table *table)
-{
-	int	i;
-
-	i = 0;
-	while (i < table->number_of_ph)
-	{
-		pthread_detach((table->philos + i)->interrogator);
-		i++;
-	}
-}
