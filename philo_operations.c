@@ -64,13 +64,6 @@ void	philosopher_sleep(t_philo *philo)
 
 int	lock_forks(t_fork *fork, t_table *table)
 {
-	pthread_mutex_lock(&table->philos_alive_lock);
-	if (!table->philos_alive)
-	{
-		pthread_mutex_unlock(&table->philos_alive_lock);
-		return (0);
-	}
-	pthread_mutex_unlock(&table->philos_alive_lock);
 	pthread_mutex_lock(&fork->mutex);
 	return (1);
 }
