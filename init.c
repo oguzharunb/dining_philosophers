@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:26:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:52:15 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/12 12:41:05 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ int	init_table(t_table **table, int argc, char const **argv)
 	(*table)->time_to_sleep = ft_atoi(argv[4]);
 	if (argc == 6)
 		(*table)->must_eat = ft_atoi(argv[5]);
+	else
+		(*table)->must_eat = -1;
 	init_time(*table);
 	(*table)->philos_alive = 1;
 	return (0);

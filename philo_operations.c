@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_operations.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:53:53 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/12 12:43:15 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,31 +146,19 @@ void	*philosopher_loop(void *args)
 	{
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
-		{
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
-			return (args);
-		}
+			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_eat(philo);
-		if (philo->table->must_eat != 0 && philo->has_eaten >= philo->table->must_eat)
-		{
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
+		if (philo->table->must_eat != -1 && philo->has_eaten >= philo->table->must_eat)
 			return (args);
-		}
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
-		{
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
-			return (args);
-		}
+			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_sleep(philo);
 		pthread_mutex_lock(&philo->table->philos_alive_lock);
 		if (!philo->table->philos_alive)
-		{
-			pthread_mutex_unlock(&philo->table->philos_alive_lock);
-			return (args);
-		}
+			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
 		philosopher_think(philo);
 	}

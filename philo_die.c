@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo_die.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:56:44 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/12 12:51:21 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,14 @@ int	did_all_philos_have_eaten(t_table *table)
 	return (1);
 }
 
+int	philo_fed_enough(t_philo *philo)
+{
+	if (philo->table->must_eat != -1
+		&& philo->has_eaten == philo->table->must_eat)
+		return (1);
+	return (0);
+}
+
 void	*interrogator(void *args)
 {
 	t_table		*table;
@@ -62,11 +70,8 @@ void	*interrogator(void *args)
 		while (i < table->number_of_ph)
 		{
 			if (did_all_philos_have_eaten(table))
-			{
-				pthread_mutex_unlock(&table->philos_alive_lock);
 				return (NULL);
-			}
-			if (did_philo_died(table->philos + i))
+			if (!philo_fed_enough(table->philos + i) && did_philo_died(table->philos + i))
 			{
 				report_status(table->philos + i, DEATH);
 				return (NULL);
