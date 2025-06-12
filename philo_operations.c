@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/12 12:43:15 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/12 13:27:27 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	philosopher_think(t_philo *philo)
 	unsigned long	time_to_think;
 
 	time_to_think = (philo->table->time_to_die - philo->table->time_to_eat
-		- philo->table->time_to_sleep) / 2;
+				- philo->table->time_to_sleep) / 2;
 	report_status(philo, THINKING);
 	while (1)
 	{
@@ -62,61 +62,11 @@ void	philosopher_sleep(t_philo *philo)
 	}
 }
 
-int	lock_forks(t_fork *fork)
-{
-	pthread_mutex_lock(&fork->mutex);
-	return (1);
-}
-
-void	unlock_forks(t_philo *philo)
-{
-	pthread_mutex_unlock(&philo->left_fork->mutex);
-	pthread_mutex_unlock(&philo->right_fork->mutex);
-}
-
 //handle the case when there is just one philosopher
-void	philosopher_eat(t_philo *philo)
+void	philosopher_ate(t_philo *philo)
 {
 	unsigned long	start_ms;
-	t_fork			*first_fork;
-	t_fork			*second_fork;
 
-	first_fork = philo->left_fork;
-	second_fork = philo->right_fork;
-	if (philo->table->number_of_ph == 1)
-	{
-		if (!lock_forks(first_fork))
-			return ;
-		report_status(philo, LEFT_FORK_TAKEN);
-		while (1)
-		{
-			if (!life_of_philos(philo->table))
-				return ;
-			usleep(1000);
-		}
-	}
-	if (philo->order % 2 == 0)
-	{
-		first_fork = philo->right_fork;
-		second_fork = philo->left_fork;
-	}
-	if (!life_of_philos(philo->table))
-		return ;
-	if (!lock_forks(first_fork))
-		return ;
-	if (!life_of_philos(philo->table))
-		return ;
-	report_status(philo, LEFT_FORK_TAKEN);
-	if (!lock_forks(second_fork))
-	{
-		pthread_mutex_unlock(&first_fork->mutex);
-		return ;
-	}
-	if (!life_of_philos(philo->table))
-	{
-		unlock_forks(philo);
-		return ;
-	}
 	report_status(philo, RIGHT_FORK_TAKEN);
 	report_status(philo, EATING);
 	start_ms = get_current_ms(philo->table);
@@ -134,7 +84,37 @@ void	philosopher_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->meal_lock);
 	unlock_forks(philo);
 	(philo->has_eaten)++;
-	return ;
+}
+
+int	philosopher_eat(t_philo *philo)
+{
+	unsigned long	start_ms;
+
+	if (philo->table->number_of_ph == 1)
+	{
+		if (!lock_forks(philo->right_fork))
+			return (0);
+		report_status(philo, LEFT_FORK_TAKEN);
+		while (1)
+		{
+			if (!life_of_philos(philo->table))
+				return (0);
+			usleep(1000);
+		}
+	}
+	if (!life_of_philos(philo->table))
+		return (0);
+	if (!lock_forks(philo->right_fork))
+		return (0);
+	if (!life_of_philos(philo->table))
+		return (0);
+	report_status(philo, LEFT_FORK_TAKEN);
+	if (!lock_forks(philo->left_fork))
+		return (pthread_mutex_unlock(&philo->right_fork->mutex));
+	if (!life_of_philos(philo->table))
+		return (unlock_forks(philo));
+	philosopher_ate(philo);
+	return (0);
 }
 
 void	*philosopher_loop(void *args)
@@ -144,22 +124,16 @@ void	*philosopher_loop(void *args)
 	philo = args;
 	while (1)
 	{
-		pthread_mutex_lock(&philo->table->philos_alive_lock);
-		if (!philo->table->philos_alive)
-			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
+		if (!life_of_philos(philo->table))
+			return (args);
 		philosopher_eat(philo);
 		if (philo->table->must_eat != -1 && philo->has_eaten >= philo->table->must_eat)
 			return (args);
-		pthread_mutex_lock(&philo->table->philos_alive_lock);
-		if (!philo->table->philos_alive)
-			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
+		if (!life_of_philos(philo->table))
+			return (args);
 		philosopher_sleep(philo);
-		pthread_mutex_lock(&philo->table->philos_alive_lock);
-		if (!philo->table->philos_alive)
-			return (pthread_mutex_unlock(&philo->table->philos_alive_lock), args);
-		pthread_mutex_unlock(&philo->table->philos_alive_lock);
+		if (!life_of_philos(philo->table))
+			return (args);
 		philosopher_think(philo);
 	}
 	return (args);

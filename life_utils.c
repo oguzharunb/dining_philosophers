@@ -1,26 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   life_of_philos.c                                   :+:      :+:    :+:   */
+/*   life_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/10 01:11:42 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/12 13:15:09 by obastug          ###   ########.fr       */
+/*   Created: 2025/06/12 13:17:42 by obastug           #+#    #+#             */
+/*   Updated: 2025/06/12 13:24:08 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-//if they dont live returns 0, if they live returns 1 
-int	life_of_philos(t_table *table)
+int	lock_forks(t_fork *fork)
 {
-	pthread_mutex_lock(&table->philos_alive_lock);
-	if (!table->philos_alive)
-	{
-		pthread_mutex_unlock(&table->philos_alive_lock);
-		return (0);
-	}
-	pthread_mutex_unlock(&table->philos_alive_lock);
+	pthread_mutex_lock(&fork->mutex);
 	return (1);
+}
+
+int	unlock_forks(t_philo *philo)
+{
+	pthread_mutex_unlock(&philo->left_fork->mutex);
+	pthread_mutex_unlock(&philo->right_fork->mutex);
+	return (0);
 }
