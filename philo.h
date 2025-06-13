@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philo.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/10 01:54:48 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 16:11:02 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,4 +88,9 @@ long	get_current_ms(t_table *table);
 long	get_begin_ms(t_table *table);
 
 int		throw_error(char const *s, int errno);
+
+void	unlock_forks(t_philo *philo);
+int		if_one_fork(t_philo *philo, t_fork *first_fork);
+int		fork_taker(t_fork *first_fork, t_fork *second_fork, t_philo *philo);
+void	give_away_forks(t_philo *philo);
 #endif

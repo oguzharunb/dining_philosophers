@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/13 15:25:24 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 16:04:46 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,14 @@
 
 int	did_philo_died(t_philo *philo)
 {
-	if (philo->table->number_of_ph != 1)
-		pthread_mutex_lock(&philo->meal_lock);
+	pthread_mutex_lock(&philo->meal_lock);
 	if (get_current_ms(philo->table)
 		- philo->last_meal_ms > philo->table->time_to_die)
 	{
-		if (philo->table->number_of_ph != 1)
-			pthread_mutex_unlock(&philo->meal_lock);
+		pthread_mutex_unlock(&philo->meal_lock);
 		return (1);
 	}
-	if (philo->table->number_of_ph != 1)
-		pthread_mutex_unlock(&philo->meal_lock);
+	pthread_mutex_unlock(&philo->meal_lock);
 	return (0);
 }
 
@@ -35,9 +32,11 @@ int	did_all_philos_have_eaten(t_table *table)
 	int	i;
 
 	i = 0;
+	if (table->must_eat == -1)
+		return (0);
 	while (i < table->number_of_ph)
 	{
-		if (table->must_eat != 0
+		if (table->must_eat != -1
 			&& table->philos[i].has_eaten < table->must_eat)
 			return (0);
 		i++;
@@ -70,8 +69,7 @@ void	*interrogator(void *args)
 		{
 			if (did_all_philos_have_eaten(table))
 				return (NULL);
-			if (!philo_fed_enough(table->philos + i)
-				&& did_philo_died(table->philos + i))
+			if (did_philo_died(table->philos + i))
 				return (report_status(table->philos + i, DEATH), NULL);
 			i++;
 		}
