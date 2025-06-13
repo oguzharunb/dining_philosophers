@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/13 16:11:02 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:03:22 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ typedef struct s_table
 	unsigned long		time_to_sleep;
 	int					must_eat;
 	int					number_of_ph;
+	int					start_table;
 	int					philos_alive;
 }	t_table;
 

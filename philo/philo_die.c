@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/13 16:04:46 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:19:04 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ void	*interrogator(void *args)
 	int			i;
 
 	table = args;
+	while (!table->start_table)
+		;
 	while (1)
 	{
 		pthread_mutex_lock(&table->philos_alive_lock);
@@ -73,7 +75,7 @@ void	*interrogator(void *args)
 				return (report_status(table->philos + i, DEATH), NULL);
 			i++;
 		}
-		usleep(1000);
+		usleep(200);
 	}
 	return (NULL);
 }

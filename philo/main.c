@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/13 15:25:40 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 17:11:47 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ int	main(int argc, char const **argv)
 	put_forks_on_table(forks, philos, table);
 	start_interrogator(table);
 	start_philosophers(philos, table);
+	init_time(table);
+	table->start_table = 1;
 	join_threads(table);
 	free_table(table);
 	free(philos);

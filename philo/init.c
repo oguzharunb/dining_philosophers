@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:26:03 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/12 12:57:39 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:14:18 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	init_table(t_table **table, int argc, char const **argv)
 	(*table)->time_to_die = ft_atoi(argv[2]);
 	(*table)->time_to_eat = ft_atoi(argv[3]);
 	(*table)->time_to_sleep = ft_atoi(argv[4]);
+	(*table)->start_table = 0;
 	if (argc == 6)
 		(*table)->must_eat = ft_atoi(argv[5]);
 	else
@@ -86,6 +87,11 @@ int	put_forks_on_table(t_fork *forks, t_philo *philos, t_table *table)
 		if (table->number_of_ph == 1)
 		{
 			(philos + i)->left_fork = &forks[i];
+			(philos + i)->right_fork = &forks[i];
+		}
+		else if ((philos + i)->order % 2 == 0)
+		{
+			(philos + i)->left_fork = &forks[(i + 1) % table->number_of_ph];
 			(philos + i)->right_fork = &forks[i];
 		}
 		else

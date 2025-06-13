@@ -2,3 +2,4 @@
 *.o
 .venv
 a.out
+philo/philo
