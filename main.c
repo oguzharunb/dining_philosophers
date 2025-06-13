@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 18:30:28 by obastug           #+#    #+#             */
-/*   Updated: 2025/03/19 21:57:38 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:25:40 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 void	start_interrogator(t_table *table)
 {
 	pthread_create(&table->interrogator, NULL,
-	interrogator, table);
+		interrogator, table);
 }
 
 void	start_philosophers(t_philo *philos, t_table *table)
@@ -30,7 +30,7 @@ void	start_philosophers(t_philo *philos, t_table *table)
 	while (i < table->number_of_ph)
 	{
 		pthread_create(&(philos + i)->thread, NULL,
-		philosopher_loop, philos + i);
+			philosopher_loop, philos + i);
 		i++;
 	}
 }

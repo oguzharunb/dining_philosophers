@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/12 12:51:21 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:25:24 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 #include <unistd.h>
 #include <stdio.h>
 
-int		did_philo_died(t_philo *philo)
+int	did_philo_died(t_philo *philo)
 {
 	if (philo->table->number_of_ph != 1)
 		pthread_mutex_lock(&philo->meal_lock);
-	if (get_current_ms(philo->table) - philo->last_meal_ms > philo->table->time_to_die)
+	if (get_current_ms(philo->table)
+		- philo->last_meal_ms > philo->table->time_to_die)
 	{
 		if (philo->table->number_of_ph != 1)
 			pthread_mutex_unlock(&philo->meal_lock);
@@ -36,7 +37,8 @@ int	did_all_philos_have_eaten(t_table *table)
 	i = 0;
 	while (i < table->number_of_ph)
 	{
-		if (table->must_eat != 0 && table->philos[i].has_eaten < table->must_eat)
+		if (table->must_eat != 0
+			&& table->philos[i].has_eaten < table->must_eat)
 			return (0);
 		i++;
 	}
@@ -61,21 +63,16 @@ void	*interrogator(void *args)
 	{
 		pthread_mutex_lock(&table->philos_alive_lock);
 		if (table->philos_alive == 0)
-		{
-			pthread_mutex_unlock(&table->philos_alive_lock);
-			return (NULL);
-		}
+			return (pthread_mutex_unlock(&table->philos_alive_lock), NULL);
 		pthread_mutex_unlock(&table->philos_alive_lock);
 		i = 0;
 		while (i < table->number_of_ph)
 		{
 			if (did_all_philos_have_eaten(table))
 				return (NULL);
-			if (!philo_fed_enough(table->philos + i) && did_philo_died(table->philos + i))
-			{
-				report_status(table->philos + i, DEATH);
-				return (NULL);
-			}
+			if (!philo_fed_enough(table->philos + i)
+				&& did_philo_died(table->philos + i))
+				return (report_status(table->philos + i, DEATH), NULL);
 			i++;
 		}
 		usleep(1000);
