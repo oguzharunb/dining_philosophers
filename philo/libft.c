@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: obastug <obastug@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 17:25:30 by obastug           #+#    #+#             */
-/*   Updated: 2025/01/21 08:17:36 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 18:21:52 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int	ft_atoi(char const *s)
 			return (-1);
 		s++;
 	}
+	if (ret == 0)
+		return (-1);
 	return (ret);
 }
 
