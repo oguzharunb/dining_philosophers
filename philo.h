@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 15:15:02 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/12 13:24:14 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/13 15:04:27 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ typedef struct s_philo
 {
 	pthread_t			thread;
 	pthread_mutex_t		meal_lock;
+	pthread_mutex_t		eat_count_lock;
 	t_fork				*left_fork;
 	t_fork				*right_fork;
 	int					has_eaten;
