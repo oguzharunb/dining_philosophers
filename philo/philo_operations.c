@@ -6,14 +6,13 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/14 12:49:18 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 12:50:55 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
-#include <stdio.h>
 // philosophers think for 10ms every time
 void	philosopher_think(t_philo *philo)
 {
