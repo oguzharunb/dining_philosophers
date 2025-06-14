@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:10:16 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/14 12:46:57 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 13:03:24 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,6 @@ int	fork_taker(t_fork *first_fork, t_fork *second_fork, t_philo *philo)
 
 void	give_away_forks(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->meal_lock);
-	philo->last_meal_ms = get_current_ms(philo->table);
-	pthread_mutex_unlock(&philo->meal_lock);
 	unlock_forks(philo);
 	(philo->has_eaten)++;
 }
