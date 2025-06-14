@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/14 12:50:55 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 14:42:55 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	philosopher_think(t_philo *philo)
 	{
 		if (!life_of_philos(philo->table))
 			return ;
-		usleep(100);
+		usleep(40);
 	}
 }
 
@@ -50,7 +50,7 @@ void	philosopher_sleep(t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
-		usleep(100);
+		usleep(40);
 	}
 }
 
@@ -74,7 +74,7 @@ void	philosopher_eat(t_philo *philo)
 			unlock_forks(philo);
 			return ;
 		}
-		usleep(100);
+		usleep(40);
 	}
 	give_away_forks(philo);
 	return ;
@@ -88,7 +88,7 @@ void	*philosopher_loop(void *args)
 	while (!philo->table->start_table)
 		;
 	if (philo->order % 2 == 0)
-		usleep(20);
+		usleep(200);
 	while (1)
 	{
 		if (!life_of_philos(philo->table))

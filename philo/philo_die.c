@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/21 17:10:59 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/14 12:46:52 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 14:40:44 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	*interrogator(void *args)
 				return (report_status(table->philos + i, DEATH), NULL);
 			i++;
 		}
-		usleep(100);
+		usleep(40);
 	}
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 16:10:16 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/14 13:03:24 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 14:40:50 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	if_one_fork(t_philo *philo, t_fork *first_fork)
 	{
 		if (!life_of_philos(philo->table))
 			return (1);
-		usleep(100);
+		usleep(40);
 	}
 	return (0);
 }
