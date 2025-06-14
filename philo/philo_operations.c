@@ -6,13 +6,14 @@
 /*   By: obastug <obastug@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/17 18:08:38 by obastug           #+#    #+#             */
-/*   Updated: 2025/06/13 18:19:14 by obastug          ###   ########.fr       */
+/*   Updated: 2025/06/14 12:49:18 by obastug          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 #include <unistd.h>
 
+#include <stdio.h>
 // philosophers think for 10ms every time
 void	philosopher_think(t_philo *philo)
 {
@@ -21,7 +22,7 @@ void	philosopher_think(t_philo *philo)
 
 	start_ms = get_current_ms(philo->table);
 	time_to_think = (philo->table->time_to_die - philo->table->time_to_eat
-			- philo->table->time_to_sleep) / 16;
+			- philo->table->time_to_sleep) / 2;
 	report_status(philo, THINKING);
 	if (time_to_think < 1)
 		return ;
@@ -30,7 +31,7 @@ void	philosopher_think(t_philo *philo)
 	{
 		if (!life_of_philos(philo->table))
 			return ;
-		usleep(200);
+		usleep(100);
 	}
 }
 
@@ -50,7 +51,7 @@ void	philosopher_sleep(t_philo *philo)
 			return ;
 		}
 		pthread_mutex_unlock(&philo->table->philos_alive_lock);
-		usleep(200);
+		usleep(100);
 	}
 }
 
@@ -74,7 +75,7 @@ void	philosopher_eat(t_philo *philo)
 			unlock_forks(philo);
 			return ;
 		}
-		usleep(200);
+		usleep(100);
 	}
 	give_away_forks(philo);
 	return ;
